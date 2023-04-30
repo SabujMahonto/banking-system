@@ -73,6 +73,19 @@
   .btn-sort:hover {
     color: #777;
   }
+  .app {
+    position: relative;
+    max-width: 100rem;
+    margin: 4rem auto;
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    grid-template-rows: auto repeat(3, 15rem) auto;
+    gap: 2rem;
+  
+    /* Login animation */
+    opacity: 1;
+    transition: all 0.3s;
+  }
 
   
 .balance {
