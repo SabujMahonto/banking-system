@@ -72,3 +72,24 @@ const inputTransferAmount = document.querySelector(".form-input-amount");
 const inputLoanAmount = document.querySelector(".form-input-loan-amount");
 const inputCloseUsername = document.querySelector(".form-input-username");
 const inputClosePassword = document.querySelector(".form-input-password");
+////////////////////////////////////////////////////////////////////////////
+// Movements 
+///////////////////////////////////////////////////////////////////////////
+function displayMovements(account){
+containerMovements.innerHTML=""
+const moves = account.movements
+moves.forEach((move,i,) =>{
+// console.log(move);
+const type = move > 0 ? "deposit" :"withdrawal";
+const html =`
+        <div class="movements-row">
+        <div class="movements-type movements-type-${type}">${i + 1}
+        ${type}</div>
+        <div class="movements-date">5 days ago</div>
+        <div class="movements-value">${move}$</div>
+        </div>
+    `
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+})
+}
+displayMovements(accounts[0])
