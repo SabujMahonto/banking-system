@@ -257,7 +257,13 @@
     text-align: right;
     font-size: 1.3rem;
   }
-        
+
   .timer {
     font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #888;
+    padding-top: 3rem;
   }
