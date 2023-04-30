@@ -73,3 +73,28 @@
   .btn-sort:hover {
     color: #777;
   }
+
+  
+.balance {
+    grid-column: 1 / span 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  
+  .balance-label {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: -0.2rem;
+  }
+  
+  .balance-date {
+    font-size: 1.4rem;
+    color: #888;
+  }
+  
+  .balance-value {
+    font-size: 4.5rem;
+    font-weight: 400;
+  }
