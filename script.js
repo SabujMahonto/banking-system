@@ -116,3 +116,13 @@ labelSumInterest.textContent = `${Math.floor(interest)}`
 
 }
 displaySummary(accounts[0])
+
+/////////////////////////////////////////////////////////////////
+// Balance
+////////////////////////////////////////////////////////////////
+
+function displayBalance(account){
+    account.balance = account.movements.reduce((acc,move) => acc + move,0)
+  labelBalance.textContent = `${account.balance}$`
+}
+displayBalance(accounts.at(0))
