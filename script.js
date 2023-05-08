@@ -126,3 +126,18 @@ function displayBalance(account){
   labelBalance.textContent = `${account.balance}$`
 }
 displayBalance(accounts.at(0))
+
+
+////////////////////////////////////////////////////////////////////////
+// create user
+/////////////////////////////////////////////////////////////////////////
+
+
+function displayUserName(accounts){
+  accounts.forEach((account)=>{
+    account.userName = account.owner.toLowerCase().split(" ").map(word => word.at(0)).join("")
+  })
+}
+
+displayUserName(accounts)
+console.log(accounts);
