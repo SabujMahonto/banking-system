@@ -92,4 +92,27 @@ const html =`
     containerMovements.insertAdjacentHTML('afterbegin', html)
 })
 }
-displayMovements(accounts[0])
+displayMovements(accounts.at(0))
+
+//////////////////////////////////////////////////////////////////////////////
+// Summary 
+///////////////////////////////////////////////////////////////////////////////
+function displaySummary(account){
+// Incomes 
+const incomes = account.movements.filter(move => move > 0).reduce((acc, deposit)=> acc + deposit,0)
+labelSumIn.textContent = `${incomes}$`
+// Outcomes
+const outcomes = account.movements.filter(move => move < 0).reduce((acc, outcome)=>acc + outcome,0)
+labelSumOut.textContent = `${Math.abs(outcomes)}$`
+
+//Interest
+const interest = account.movements.filter(move =>move > 0)
+.map(deposit => deposit * account.interestRate / 100)
+.filter(interest => interest > 1)
+.reduce((acc, interest) => acc + interest,0)
+
+labelSumInterest.textContent = `${Math.floor(interest)}`
+
+
+}
+displaySummary(accounts[0])
