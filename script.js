@@ -72,9 +72,19 @@ const inputTransferAmount = document.querySelector(".form-input-amount");
 const inputLoanAmount = document.querySelector(".form-input-loan-amount");
 const inputCloseUsername = document.querySelector(".form-input-username");
 const inputClosePassword = document.querySelector(".form-input-password");
+/////////////////////////////////////////////////////////////////////////
+//updateUI
+////////////////////////////////////////////////////////////////////////
+function updateUI(){
+  displayMovements(currentAccount)
+  displaySummary(currentAccount)
+  displayBalance(currentAccount)
+}
 ////////////////////////////////////////////////////////////////////////////
 // Movements 
 ///////////////////////////////////////////////////////////////////////////
+let currentAccount, timer;
+
 function displayMovements(account){
 containerMovements.innerHTML=""
 const moves = account.movements
@@ -92,7 +102,7 @@ const html =`
     containerMovements.insertAdjacentHTML('afterbegin', html)
 })
 }
-displayMovements(accounts.at(0))
+
 
 //////////////////////////////////////////////////////////////////////////////
 // Summary 
@@ -111,11 +121,10 @@ const interest = account.movements.filter(move =>move > 0)
 .filter(interest => interest > 1)
 .reduce((acc, interest) => acc + interest,0)
 
-labelSumInterest.textContent = `${Math.floor(interest)}`
-
+labelSumInterest.textContent = `${interest}$`
 
 }
-displaySummary(accounts[0])
+
 
 /////////////////////////////////////////////////////////////////
 // Balance
@@ -125,19 +134,45 @@ function displayBalance(account){
     account.balance = account.movements.reduce((acc,move) => acc + move,0)
   labelBalance.textContent = `${account.balance}$`
 }
-displayBalance(accounts.at(0))
-
 
 ////////////////////////////////////////////////////////////////////////
-// create user
+// create userName
 /////////////////////////////////////////////////////////////////////////
-
-
 function displayUserName(accounts){
   accounts.forEach((account)=>{
     account.userName = account.owner.toLowerCase().split(" ").map(word => word.at(0)).join("")
   })
 }
-
 displayUserName(accounts)
-console.log(accounts);
+
+
+
+////////////////////////////////////////////////////////////////////////////
+// Login
+///////////////////////////////////////////////////////////////////////////
+
+btnLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    (account) => account.userName === inputLoginUsername.value
+  );
+
+  if (currentAccount?.password === +inputLoginPassword.value) {
+    // Display UI and welcome message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(" ").at(0)
+    }`;
+    labelWelcome.style.color = "#444";
+    containerApp.style.opacity = 1;
+
+    
+
+    // Update UI
+    updateUI(currentAccount);
+   
+  } else {
+   
+  }
+  
+});
