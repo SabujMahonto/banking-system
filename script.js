@@ -172,7 +172,15 @@ btnLogin.addEventListener("click", (e) => {
     updateUI(currentAccount);
    
   } else {
+     // Hide UI and display warning message
+   labelWelcome.textContent = "Incorrect user or password!";
+   labelWelcome.style.color = "#f3442a";
+   containerApp.style.opacity = 0;
    
   }
+  
+  // Clear input fields
+  inputLoginUsername.value = inputLoginPassword.value = "";
+  inputLoginPassword.blur();
   
 });
