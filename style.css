@@ -49,6 +49,9 @@
     color: inherit;
     border: 1px solid #fff;
     transition: all 0.3s;
+    opacity: 1;
+    visibility: visible;
+    
   }
   
   .login-input:focus {
@@ -60,6 +63,15 @@
   }
   
   .login-btn {
+    background: none;
+    font-size: 2rem;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .logout-btn {
+    opacity: 0;
+    visibility: hidden;
     background: none;
     font-size: 2rem;
     color: inherit;
@@ -83,7 +95,7 @@
     gap: 2rem;
   
     /* Login animation */
-    opacity: 1;
+    opacity: 0;
     transition: all 0.3s;
   }
 

@@ -61,17 +61,22 @@ const labelTimer = document.querySelector(".timer");
 const containerApp = document.querySelector(".app");
 const containerMovements = document.querySelector(".movements");
 const btnLogin = document.querySelector(".login-btn");
+const btnLogout = document.querySelector(".logout-btn");
 const btnTransfer = document.querySelector(".form-btn-transfer");
 const btnLoan = document.querySelector(".form-btn-loan");
 const btnClose = document.querySelector(".form-btn-close");
 const btnSort = document.querySelector(".btn-sort");
 const inputLoginUsername = document.querySelector(".login-input-username");
 const inputLoginPassword = document.querySelector(".login-input-password");
+const input = document.querySelector(".login-input");
 const inputTransferTo = document.querySelector(".form-input-to");
 const inputTransferAmount = document.querySelector(".form-input-amount");
 const inputLoanAmount = document.querySelector(".form-input-loan-amount");
 const inputCloseUsername = document.querySelector(".form-input-username");
 const inputClosePassword = document.querySelector(".form-input-password");
+const inputFill = document.querySelector(".login-input-username")
+const inputFillPass = document.querySelector(".login-input-password")
+
 /////////////////////////////////////////////////////////////////////////
 //updateUI
 ////////////////////////////////////////////////////////////////////////
@@ -165,6 +170,13 @@ btnLogin.addEventListener("click", (e) => {
     }`;
     labelWelcome.style.color = "#444";
     containerApp.style.opacity = 1;
+    btnLogout.style.opacity = 1;
+    btnLogout.style.visibility = "visible";
+    btnLogin.style.opacity = 0;
+    inputFill.style.opacity = 0;
+    inputFill.style.visibility ="hidden"
+    inputFillPass.style.opacity = 0;
+    inputFillPass.style.visibility ="hidden"
 
     
 
@@ -175,7 +187,7 @@ btnLogin.addEventListener("click", (e) => {
      // Hide UI and display warning message
    labelWelcome.textContent = "Incorrect user or password!";
    labelWelcome.style.color = "#f3442a";
-   containerApp.style.opacity = 0;
+   containerApp.style.opacity = 1;
    
   }
   
