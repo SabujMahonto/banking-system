@@ -233,3 +233,30 @@ btnTransfer.addEventListener("click", (e) => {
    inputTransferTo.value = inputTransferAmount.value ="";
   inputTransferAmount.blur();
 });
+
+//////////////////////////////////////////////////////////////////////
+// Loan
+///////////////////////////////////////////////////////////////////////
+
+btnLoan.addEventListener("click", (e)=>{
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if(amount > 0 && currentAccount.movements.some(move => move >= amount  * 0.1) ){
+    // add positive movement into current account
+    currentAccount.movements.push(amount)
+
+    //Update ui
+    updateUI(currentAccount)
+
+    //message
+    labelWelcome.textContent = "loan successful"
+
+    // clear fields 
+    inputLoanAmount.value = "";
+    inputLoanAmount.blur()
+
+  }else{
+    labelWelcome.textContent = "loan not success"
+  }
+})
