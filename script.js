@@ -89,9 +89,9 @@ function updateUI(currentAccount) {
 ///////////////////////////////////////////////////////////////////////////
 let currentAccount, timer;
 
-function displayMovements(account) {
+function displayMovements(account, sort = false) {
   containerMovements.innerHTML = "";
-  const moves = account.movements;
+  const moves = sort ? account.movements.slice(0).sort((a,b)=> a-b) : account.movements;
   moves.forEach((move, i) => {
     // console.log(move);
     const type = move > 0 ? "deposit" : "withdrawal";
@@ -259,4 +259,14 @@ btnLoan.addEventListener("click", (e)=>{
   }else{
     labelWelcome.textContent = "loan not success"
   }
+})
+///////////////////////////////////////////////////////////////////////////////
+// Sort
+///////////////////////////////////////////////////////////////////////////////
+let sortMove = false;
+
+btnSort.addEventListener("click", function(e){
+  e.preventDefault();
+  displayMovements(currentAccount, !sortMove)
+  sortMove = !sortMove
 })
