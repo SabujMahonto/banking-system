@@ -1,3 +1,4 @@
+import { setTimeout } from "core-js";
 import "core-js/stable";
 
 /////////////////////////////////////////////////////////////
@@ -91,7 +92,9 @@ let currentAccount, timer;
 
 function displayMovements(account, sort = false) {
   containerMovements.innerHTML = "";
-  const moves = sort ? account.movements.slice(0).sort((a,b)=> a-b) : account.movements;
+  const moves = sort
+    ? account.movements.slice(0).sort((a, b) => a - b)
+    : account.movements;
   moves.forEach((move, i) => {
     // console.log(move);
     const type = move > 0 ? "deposit" : "withdrawal";
@@ -167,29 +170,32 @@ btnLogin.addEventListener("click", (e) => {
   );
 
   if (currentAccount?.password === +inputLoginPassword.value) {
-    // Display UI and welcome message
-    labelWelcome.textContent = `Welcome back, ${currentAccount.owner
-      .split(" ")
-      .at(0)}`;
-    labelWelcome.style.color = "#444";
-    containerApp.style.opacity = 1;
-    containerApp.style.visibility = "visible";
-    btnLogout.style.opacity = 1;
-    btnLogout.style.visibility = "visible";
-    btnLogin.style.opacity = 0;
-    inputFill.style.opacity = 0;
-    inputFill.style.visibility = "hidden";
-    inputFillPass.style.opacity = 0;
-    inputFillPass.style.visibility = "hidden";
+    setTimeout(() => {
+      // Display UI and welcome message
+      labelWelcome.textContent = `Welcome back, ${currentAccount.owner
+        .split(" ")
+        .at(0)}`;
+      labelWelcome.style.color = "#444";
+      containerApp.style.opacity = 1;
+      containerApp.style.visibility = "visible";
+      btnLogout.style.opacity = 1;
+      btnLogout.style.visibility = "visible";
+      btnLogin.style.opacity = 0;
+      inputFill.style.opacity = 0;
+      inputFill.style.visibility = "hidden";
+      inputFillPass.style.opacity = 0;
+      inputFillPass.style.visibility = "hidden";
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 3000);
   } else {
-    // Hide UI and display warning message
-    labelWelcome.textContent = "Incorrect user or password!";
-    labelWelcome.style.color = "#f3442a";
-    containerApp.style.opacity = 1;
-    containerApp.style.visibility = "visible";
+    setTimeout(() => {
+      // Hide UI and display warning message
+      labelWelcome.textContent = "Login Fail !";
+      containerApp.style.opacity = 1;
+      containerApp.style.visibility = "visible";
+    }, 3000);
   }
 
   // Clear input fields
@@ -215,22 +221,21 @@ btnTransfer.addEventListener("click", (e) => {
     currentAccount.userName !== receiverAccount.userName &&
     receiverAccount
   ) {
-    // Transfer Money 
-    currentAccount.movements.push(-amount)
-    receiverAccount.movements.push(amount)
+    // Transfer Money
+    currentAccount.movements.push(-amount);
+    receiverAccount.movements.push(amount);
     // Update U
-    updateUI(currentAccount)
+    updateUI(currentAccount);
 
     //Show Massage
-    labelWelcome.textContent = "Transfer Successful"
-
-  }else{
-    labelWelcome.textContent = "transfer Fail !"
+    labelWelcome.textContent = "Transfer Successful";
+  } else {
+    labelWelcome.textContent = "transfer Fail !";
     labelWelcome.style.color = "#f3442a";
   }
 
   // clear fields
-   inputTransferTo.value = inputTransferAmount.value ="";
+  inputTransferTo.value = inputTransferAmount.value = "";
   inputTransferAmount.blur();
 });
 
@@ -238,35 +243,37 @@ btnTransfer.addEventListener("click", (e) => {
 // Loan
 ///////////////////////////////////////////////////////////////////////
 
-btnLoan.addEventListener("click", (e)=>{
+btnLoan.addEventListener("click", (e) => {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
 
-  if(amount > 0 && currentAccount.movements.some(move => move >= amount  * 0.1) ){
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((move) => move >= amount * 0.1)
+  ) {
     // add positive movement into current account
-    currentAccount.movements.push(amount)
+    currentAccount.movements.push(amount);
 
     //Update ui
-    updateUI(currentAccount)
+    updateUI(currentAccount);
 
     //message
-    labelWelcome.textContent = "loan successful"
+    labelWelcome.textContent = "loan successful";
 
-    // clear fields 
+    // clear fields
     inputLoanAmount.value = "";
-    inputLoanAmount.blur()
-
-  }else{
-    labelWelcome.textContent = "loan not success"
+    inputLoanAmount.blur();
+  } else {
+    labelWelcome.textContent = "loan not success";
   }
-})
+});
 ///////////////////////////////////////////////////////////////////////////////
 // Sort
 ///////////////////////////////////////////////////////////////////////////////
 let sortMove = false;
 
-btnSort.addEventListener("click", function(e){
+btnSort.addEventListener("click", function (e) {
   e.preventDefault();
-  displayMovements(currentAccount, !sortMove)
-  sortMove = !sortMove
-})
+  displayMovements(currentAccount, !sortMove);
+  sortMove = !sortMove;
+});
