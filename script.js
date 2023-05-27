@@ -221,17 +221,21 @@ btnTransfer.addEventListener("click", (e) => {
     currentAccount.userName !== receiverAccount.userName &&
     receiverAccount
   ) {
-    // Transfer Money
-    currentAccount.movements.push(-amount);
-    receiverAccount.movements.push(amount);
-    // Update U
-    updateUI(currentAccount);
+    setTimeout(() => {
+      // Transfer Money
+      currentAccount.movements.push(-amount);
+      receiverAccount.movements.push(amount);
+      // Update U
+      updateUI(currentAccount);
 
-    //Show Massage
-    labelWelcome.textContent = "Transfer Successful";
+      //Show Massage
+      labelWelcome.textContent = "Transfer Successful";
+    }, 3000);
   } else {
-    labelWelcome.textContent = "transfer Fail !";
-    labelWelcome.style.color = "#f3442a";
+    setTimeout(() => {
+      labelWelcome.textContent = "transfer Fail !";
+      labelWelcome.style.color = "#f3442a";
+    }, 3000);
   }
 
   // clear fields
@@ -251,22 +255,27 @@ btnLoan.addEventListener("click", (e) => {
     amount > 0 &&
     currentAccount.movements.some((move) => move >= amount * 0.1)
   ) {
-    // add positive movement into current account
-    currentAccount.movements.push(amount);
+    setTimeout(() => {
+      // add positive movement into current account
+      currentAccount.movements.push(amount);
 
-    //Update ui
-    updateUI(currentAccount);
+      //Update ui
+      updateUI(currentAccount);
 
-    //message
-    labelWelcome.textContent = "loan successful";
+      //message
+      labelWelcome.textContent = "loan successful";
 
-    // clear fields
-    inputLoanAmount.value = "";
-    inputLoanAmount.blur();
+      // clear fields
+      inputLoanAmount.value = "";
+      inputLoanAmount.blur();
+    }, 3000);
   } else {
-    labelWelcome.textContent = "loan not success";
+    setTimeout(() => {
+      labelWelcome.textContent = "loan not success";
+    }, 3000);
   }
 });
+
 ///////////////////////////////////////////////////////////////////////////////
 // Sort
 ///////////////////////////////////////////////////////////////////////////////
