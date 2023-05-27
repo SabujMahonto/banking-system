@@ -276,6 +276,33 @@ btnLoan.addEventListener("click", (e) => {
   }
 });
 
+/////////////////////////////////////////////////////////////////////////////
+// Close Account
+////////////////////////////////////////////////////////////////////////////
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+  if (
+    currentAccount.userName === inputCloseUsername.value &&
+    currentAccount.password === Number(inputClosePassword.value)
+  ) {
+    const index = accounts.findIndex(
+      (account) => account.userName === currentAccount.userName
+    );
+    setTimeout(() => {
+      //Delete
+      accounts.splice(index, 1);
+      //hide UI
+      containerApp.style.opacity = 0;
+      // message
+      labelWelcome.textContent = "Account Deleted";
+    }, 3000);
+  } else {
+    labelWelcome.textContent = "Deleted can't be Done";
+  }
+  // clear fields
+  inputCloseUsername.value = inputClosePassword.value = "";
+  inputClosePassword.blur();
+});
 ///////////////////////////////////////////////////////////////////////////////
 // Sort
 ///////////////////////////////////////////////////////////////////////////////
