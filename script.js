@@ -98,12 +98,17 @@ function displayMovements(account, sort = false) {
   moves.forEach((move, i) => {
     // console.log(move);
     const type = move > 0 ? "deposit" : "withdrawal";
+    const formattedMove = formatCurrency(
+      move,
+      account.locale,
+      account.currency
+    );
     const html = `
         <div class="movements-row">
         <div class="movements-type movements-type-${type}">${i + 1}
         ${type}</div>
         <div class="movements-date">5 days ago</div>
-        <div class="movements-value">${move}$</div>
+        <div class="movements-value">${formattedMove}$</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML("afterbegin", html);
@@ -119,12 +124,20 @@ function displaySummary(account) {
   const incomes = account.movements
     .filter((move) => move > 0)
     .reduce((acc, deposit) => acc + deposit, 0);
-  labelSumIn.textContent = `${incomes}$`;
+  labelSumIn.textContent = formatCurrency(
+    incomes,
+    account.locale,
+    account.currency
+  );
   // Outcomes
   const outcomes = account.movements
     .filter((move) => move < 0)
     .reduce((acc, outcome) => acc + outcome, 0);
-  labelSumOut.textContent = `${Math.abs(outcomes)}$`;
+  labelSumOut.textContent = formatCurrency(
+    Math.abs(outcomes),
+    account.locale,
+    account.currency
+  );
   //Interest
   const interest = account.movements
     .filter((move) => move > 0)
@@ -132,7 +145,11 @@ function displaySummary(account) {
     .filter((interest) => interest > 1)
     .reduce((acc, interest) => acc + interest, 0);
 
-  labelSumInterest.textContent = `${interest}$`;
+  labelSumInterest.textContent = formatCurrency(
+    interest,
+    account.locale,
+    account.currency
+  );
 }
 
 /////////////////////////////////////////////////////////////////
@@ -141,7 +158,11 @@ function displaySummary(account) {
 
 function displayBalance(account) {
   account.balance = account.movements.reduce((acc, move) => acc + move, 0);
-  labelBalance.textContent = `${account.balance}$`;
+  labelBalance.textContent = formatCurrency(
+    account.balance,
+    account.locale,
+    account.currency
+  );
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -312,10 +333,17 @@ btnSort.addEventListener("click", function (e) {
 ////////////////////////////////////////////////////////////////////////////////
 // Formatting Currency
 ////////////////////////////////////////////////////////////////////////////////
+// function formatCurrency(value, locale, currency) {
+//   const option = {
+//     style: "currency",
+//     currency: currency,
+//   };
+//   return new Intl.NumberFormat(locale, option).format(value);
+// }
+
 function formatCurrency(value, locale, currency) {
-  const option = {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: currency,
-  };
-  return new Intl.NumberFormat(locale, {}).format(value);
+  }).format(value);
 }
