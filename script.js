@@ -88,8 +88,8 @@ function updateUI(currentAccount) {
 ////////////////////////////////////////////////////////////////////////////
 // Movements
 ///////////////////////////////////////////////////////////////////////////
-let currentAccount, timer;
 
+let currentAccount, timer;
 function displayMovements(account, sort = false) {
   containerMovements.innerHTML = "";
   const moves = sort
@@ -113,6 +113,7 @@ function displayMovements(account, sort = false) {
 //////////////////////////////////////////////////////////////////////////////
 // Summary
 ///////////////////////////////////////////////////////////////////////////////
+
 function displaySummary(account) {
   // Incomes
   const incomes = account.movements
@@ -124,7 +125,6 @@ function displaySummary(account) {
     .filter((move) => move < 0)
     .reduce((acc, outcome) => acc + outcome, 0);
   labelSumOut.textContent = `${Math.abs(outcomes)}$`;
-
   //Interest
   const interest = account.movements
     .filter((move) => move > 0)
@@ -147,6 +147,7 @@ function displayBalance(account) {
 ////////////////////////////////////////////////////////////////////////
 // create userName
 /////////////////////////////////////////////////////////////////////////
+
 function displayUserName(accounts) {
   accounts.forEach((account) => {
     account.userName = account.owner
@@ -164,11 +165,9 @@ displayUserName(accounts);
 
 btnLogin.addEventListener("click", (e) => {
   e.preventDefault();
-
   currentAccount = accounts.find(
     (account) => account.userName === inputLoginUsername.value
   );
-
   if (currentAccount?.password === +inputLoginPassword.value) {
     setTimeout(() => {
       // Display UI and welcome message
@@ -185,7 +184,6 @@ btnLogin.addEventListener("click", (e) => {
       inputFill.style.visibility = "hidden";
       inputFillPass.style.opacity = 0;
       inputFillPass.style.visibility = "hidden";
-
       // Update UI
       updateUI(currentAccount);
     }, 3000);
@@ -197,7 +195,6 @@ btnLogin.addEventListener("click", (e) => {
       containerApp.style.visibility = "visible";
     }, 3000);
   }
-
   // Clear input fields
   inputLoginUsername.value = inputLoginPassword.value = "";
   inputLoginPassword.blur();
@@ -227,7 +224,6 @@ btnTransfer.addEventListener("click", (e) => {
       receiverAccount.movements.push(amount);
       // Update U
       updateUI(currentAccount);
-
       //Show Massage
       labelWelcome.textContent = "Transfer Successful";
     }, 3000);
@@ -237,7 +233,6 @@ btnTransfer.addEventListener("click", (e) => {
       labelWelcome.style.color = "#f3442a";
     }, 3000);
   }
-
   // clear fields
   inputTransferTo.value = inputTransferAmount.value = "";
   inputTransferAmount.blur();
@@ -250,7 +245,6 @@ btnTransfer.addEventListener("click", (e) => {
 btnLoan.addEventListener("click", (e) => {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
-
   if (
     amount > 0 &&
     currentAccount.movements.some((move) => move >= amount * 0.1)
@@ -258,13 +252,10 @@ btnLoan.addEventListener("click", (e) => {
     setTimeout(() => {
       // add positive movement into current account
       currentAccount.movements.push(amount);
-
       //Update ui
       updateUI(currentAccount);
-
       //message
       labelWelcome.textContent = "loan successful";
-
       // clear fields
       inputLoanAmount.value = "";
       inputLoanAmount.blur();
@@ -279,6 +270,7 @@ btnLoan.addEventListener("click", (e) => {
 /////////////////////////////////////////////////////////////////////////////
 // Close Account
 ////////////////////////////////////////////////////////////////////////////
+
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
   if (
@@ -297,19 +289,33 @@ btnClose.addEventListener("click", function (e) {
       labelWelcome.textContent = "Account Deleted";
     }, 3000);
   } else {
-    labelWelcome.textContent = "Deleted can't be Done";
+    setTimeout(() => {
+      labelWelcome.textContent = "Deleted can't be Done";
+    }, 3000);
   }
   // clear fields
   inputCloseUsername.value = inputClosePassword.value = "";
   inputClosePassword.blur();
 });
+
 ///////////////////////////////////////////////////////////////////////////////
 // Sort
 ///////////////////////////////////////////////////////////////////////////////
-let sortMove = false;
 
+let sortMove = false;
 btnSort.addEventListener("click", function (e) {
   e.preventDefault();
   displayMovements(currentAccount, !sortMove);
   sortMove = !sortMove;
 });
+
+////////////////////////////////////////////////////////////////////////////////
+// Formatting Currency
+////////////////////////////////////////////////////////////////////////////////
+function formatCurrency(value, locale, currency) {
+  const option = {
+    style: "currency",
+    currency: currency,
+  };
+  return new Intl.NumberFormat(locale, {}).format(value);
+}
