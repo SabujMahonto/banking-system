@@ -108,7 +108,7 @@ function displayMovements(account, sort = false) {
         <div class="movements-type movements-type-${type}">${i + 1}
         ${type}</div>
         <div class="movements-date">5 days ago</div>
-        <div class="movements-value">${formattedMove}$</div>
+        <div class="movements-value">${formattedMove}</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML("afterbegin", html);
@@ -205,6 +205,19 @@ btnLogin.addEventListener("click", (e) => {
       inputFill.style.visibility = "hidden";
       inputFillPass.style.opacity = 0;
       inputFillPass.style.visibility = "hidden";
+      // Display date & Time
+      const now = new Date();
+      const option = {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      };
+      labelDate.textContent = new Intl.DateTimeFormat(
+        currentAccount.locale,
+        option
+      ).format(now);
       // Update UI
       updateUI(currentAccount);
     }, 3000);
