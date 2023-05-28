@@ -18,10 +18,10 @@ const accounts = [
       "2022-04-01T10:17:24.185Z",
       "2022-07-08T14:11:59.604Z",
       "2022-09-10T17:01:17.194Z",
-      "2022-09-12T23:36:17.929Z",
-      "2022-09-15T12:51:31.398Z",
-      "2022-09-19T06:41:26.190Z",
-      "2022-09-21T08:11:36.678Z",
+      "2023-05-12T23:36:17.929Z",
+      "2023-05-23T12:51:31.398Z",
+      "2023-05-27T06:41:26.190Z",
+      "2023-05-28T08:11:36.678Z",
     ],
     currency: "USD",
     locale: "en-US",
@@ -38,10 +38,10 @@ const accounts = [
       "2022-02-14T10:17:24.687Z",
       "2022-03-12T14:11:59.203Z",
       "2022-05-16T17:01:17.392Z",
-      "2022-08-10T23:36:17.522Z",
-      "2022-09-03T12:51:31.491Z",
-      "2022-09-18T06:41:26.394Z",
-      "2022-09-21T08:11:36.276Z",
+      "2023-05-12T23:36:17.929Z",
+      "2023-05-23T12:51:31.398Z",
+      "2023-05-27T06:41:26.190Z",
+      "2023-05-28T08:11:36.678Z",
     ],
     currency: "EUR",
     locale: "en-GB",
@@ -103,11 +103,13 @@ function displayMovements(account, sort = false) {
       account.locale,
       account.currency
     );
+    const date = new Date(account.movementsDates.at(i));
+    const displayDate = formateMoveDate(date, account.locale);
     const html = `
         <div class="movements-row">
         <div class="movements-type movements-type-${type}">${i + 1}
         ${type}</div>
-        <div class="movements-date">5 days ago</div>
+        <div class="movements-date">${displayDate}</div>
         <div class="movements-value">${formattedMove}</div>
         </div>
     `;
@@ -346,17 +348,28 @@ btnSort.addEventListener("click", function (e) {
 ////////////////////////////////////////////////////////////////////////////////
 // Formatting Currency
 ////////////////////////////////////////////////////////////////////////////////
-// function formatCurrency(value, locale, currency) {
-//   const option = {
-//     style: "currency",
-//     currency: currency,
-//   };
-//   return new Intl.NumberFormat(locale, option).format(value);
-// }
-
 function formatCurrency(value, locale, currency) {
-  return new Intl.NumberFormat(locale, {
+  const option = {
     style: "currency",
     currency: currency,
-  }).format(value);
+  };
+  return new Intl.NumberFormat(locale, option).format(value);
+}
+/////////////////////////////////////////////////////////////////////////////////////
+// Dqy Calculations
+/////////////////////////////////////////////////////////////////////////////////////
+function formateMoveDate(date, locale) {
+  const calculateDays = (day1, day2) =>
+    Math.round(Math.abs(day2 - day1) / (24 * 60 * 60 * 1000));
+  const daysPassed = calculateDays(new Date(), date);
+
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 2) return "YesterDay";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  return new Intl.DateTimeFormat(locale, {
+    month: "short",
+    year: "numeric",
+    day: "numeric",
+  }).format(date);
 }
