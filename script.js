@@ -154,10 +154,9 @@ function displaySummary(account) {
   );
 }
 
-/////////////////////////////////////////////////////////////////
-// Balance
-////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////
+// Display balance
+/////////////////////////////////////////////////////////////
 function displayBalance(account) {
   account.balance = account.movements.reduce((acc, move) => acc + move, 0);
   labelBalance.textContent = formatCurrency(
@@ -200,13 +199,14 @@ btnLogin.addEventListener("click", (e) => {
       labelWelcome.style.color = "#444";
       containerApp.style.opacity = 1;
       containerApp.style.visibility = "visible";
-      btnLogout.style.opacity = 1;
-      btnLogout.style.visibility = "visible";
-      btnLogin.style.opacity = 0;
-      inputFill.style.opacity = 0;
-      inputFill.style.visibility = "hidden";
-      inputFillPass.style.opacity = 0;
-      inputFillPass.style.visibility = "hidden";
+      // btnLogout.style.opacity = 1;
+      // btnLogout.style.visibility = "visible";
+      // btnLogin.style.opacity = 0;
+      // inputFill.style.opacity = 0;
+      // inputFill.style.visibility = "hidden";
+      // inputFillPass.style.opacity = 0;
+      // inputFillPass.style.visibility = "hidden";
+
       // Display date & Time
       const now = new Date();
       const option = {
@@ -220,16 +220,20 @@ btnLogin.addEventListener("click", (e) => {
         currentAccount.locale,
         option
       ).format(now);
+      /// Timer
+      if (timer) clearInterval(timer);
+      timer = logOutTimer();
+
       // Update UI
       updateUI(currentAccount);
-    }, 3000);
+    }, 2000);
   } else {
     setTimeout(() => {
       // Hide UI and display warning message
       labelWelcome.textContent = "Login Fail !";
       containerApp.style.opacity = 1;
       containerApp.style.visibility = "visible";
-    }, 3000);
+    }, 2000);
   }
   // Clear input fields
   inputLoginUsername.value = inputLoginPassword.value = "";
@@ -251,13 +255,16 @@ btnTransfer.addEventListener("click", (e) => {
   if (
     amount > 0 &&
     amount <= currentAccount.balance &&
-    currentAccount.userName !== receiverAccount.userName &&
-    receiverAccount
+    receiverAccount &&
+    receiverAccount?.username !== currentAccount.userName
   ) {
     setTimeout(() => {
       // Transfer Money
       currentAccount.movements.push(-amount);
       receiverAccount.movements.push(amount);
+      //Add current date & time
+      currentAccount.movementsDates.push(new Date().toISOString());
+      receiverAccount.movementsDates.push(new Date().toISOString());
       // Update U
       updateUI(currentAccount);
       //Show Massage
@@ -288,6 +295,8 @@ btnLoan.addEventListener("click", (e) => {
     setTimeout(() => {
       // add positive movement into current account
       currentAccount.movements.push(amount);
+      // add current date & Time
+      currentAccount.movementsDates.push(new Date().toISOString());
       //Update ui
       updateUI(currentAccount);
       //message
@@ -356,7 +365,7 @@ function formatCurrency(value, locale, currency) {
   return new Intl.NumberFormat(locale, option).format(value);
 }
 /////////////////////////////////////////////////////////////////////////////////////
-// Dqy Calculations
+// Day Calculations
 /////////////////////////////////////////////////////////////////////////////////////
 function formateMoveDate(date, locale) {
   const calculateDays = (day1, day2) =>
@@ -372,4 +381,40 @@ function formateMoveDate(date, locale) {
     year: "numeric",
     day: "numeric",
   }).format(date);
+}
+
+/////////////////////////////////////////////////////////////
+// Logout timer
+/////////////////////////////////////////////////////////////
+function logOutTimer() {
+  labelTimer.textContent = "";
+
+  // Set timer
+  let time = 120;
+
+  const tickTick = () => {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // In each call, print the remaining time
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When we reach 0 second, stop timer and log out
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = "You have been logged out!";
+      labelWelcome.style.color = "#f3442a";
+      containerApp.style.opacity = 0;
+    }
+
+    // Decrease 1s
+    time--;
+  };
+
+  tickTick();
+
+  // Call the timer every second
+  timer = setInterval(tickTick, 1000);
+
+  return timer;
 }
